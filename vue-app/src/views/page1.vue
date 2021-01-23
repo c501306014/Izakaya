@@ -57,7 +57,12 @@
           </div>
           <div class="input-field col m6 s12">
             <i class="material-icons prefix">train</i>
-            <input type="text" class="validate" v-model="station_name" />
+            <input
+              id="station-name"
+              type="text"
+              class="validate"
+              v-model="station_name"
+            />
             <label for="station-name">駅名</label>
           </div>
         </div>
@@ -139,7 +144,8 @@ export default {
       alert(this.pref_name);
 
       const response = await axios
-        .get("http://localhost:3000/test", {
+        .get("https://izakaya-search.herokuapp.com/test", {
+          // .get("http://localhost:3000/test", {
           params: {
             station_name: this.station_name,
             pref_name: this.pref_name,
