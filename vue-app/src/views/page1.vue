@@ -4,7 +4,11 @@
       <form class="col s12">
         <div class="row">
           <div class="input-field col m6 s12">
-            <select id="pref-name" v-model="pref_name">
+            <select
+              id="pref-name"
+              v-model="pref_name"
+              v-bind:class="{ 'browser-default': is_ios }"
+            >
               <option value="北海道">北海道</option>
               <option value="青森県">青森県</option>
               <option value="岩手県">岩手県</option>
@@ -53,7 +57,7 @@
               <option value="鹿児島県">鹿児島県</option>
               <option value="沖縄県">沖縄県</option>
             </select>
-            <label for="pref-name">都道府県名</label>
+            <label for="pref-name" v-show="!is_ios">都道府県名</label>
           </div>
           <div class="input-field col m6 s12">
             <i class="material-icons prefix">train</i>
@@ -137,6 +141,7 @@ export default {
       pref_name: null,
       paginate: ["paginate-items"],
       message: null,
+      is_ios: false,
     };
   },
   methods: {
@@ -159,10 +164,21 @@ export default {
       this.shop_list = response.data.shop_list;
       console.log(this.shop_list);
     },
-    my_func() {},
+    check_os: function () {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      if (
+        userAgent.indexOf("iphone") !== -1 ||
+        userAgent.indexOf("ipad") !== -1
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   mounted() {
     M.AutoInit();
+    this.is_ios = this.check_os();
   },
 };
 </script>
