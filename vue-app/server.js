@@ -1,19 +1,25 @@
-var express = require('express');
-var router = express.Router();
-var axios = require('axios')
+// server.js
+const express = require('express');
+const path = require('path');
+const serveStatic = require('serve-static');
+const cors = require('cors')
+const createError = require('http-errors')
+const axios = require('axios')
 
-const {
-  response
-} = require('express');
+app = express();
+app.use(serveStatic(__dirname + "/dist"));
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: false
+}))
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express'
-  });
-});
+const port = process.env.PORT || 3000;
 
-router.get('/test', function (req, res, next) {
+app.listen(port);
+console.log('server started ' + port);
+
+app.get('/test', function (req, res, next) {
   const test = async function (station_name, pref_name) {
     station_name = encodeURI(station_name)
     pref_name = encodeURI(pref_name)
@@ -26,18 +32,16 @@ router.get('/test', function (req, res, next) {
         return err.response
       })
 
-    if('error' in RailRes.data['response']){
+    if ('error' in RailRes.data['response']) {
       console.log(RailRes.data['response']["error"])
-      
-    }
-    else if (!RailRes.data['response']['station'].length) {
+
+    } else if (!RailRes.data['response']['station'].length) {
       const err = new Error('駅名と都道府県の組み合わせが正しくありません')
       res.status(400).send({
         error: err.message,
-        data :RailRes.data['response']
+        data: RailRes.data['response']
       })
-    }
-    else{
+    } else {
       console.log("---------------------------------------------------")
     }
 
@@ -63,5 +67,3 @@ router.get('/test', function (req, res, next) {
   }
   main()
 })
-
-module.exports = router;
