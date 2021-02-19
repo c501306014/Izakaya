@@ -1,88 +1,43 @@
 <template>
   <div class="container">
-    <div class="row">
-      <form class="col s12" @submit.prevent="post">
-        <div class="row">
-          <div class="input-field col m6 s12">
-            <select id="pref-name" v-model="pref_name">
-              <option value="北海道">北海道</option>
-              <option value="青森県">青森県</option>
-              <option value="岩手県">岩手県</option>
-              <option value="宮城県">宮城県</option>
-              <option value="秋田県">秋田県</option>
-              <option value="山形県">山形県</option>
-              <option value="福島県">福島県</option>
-              <option value="茨城県">茨城県</option>
-              <option value="栃木県">栃木県</option>
-              <option value="群馬県">群馬県</option>
-              <option value="埼玉県">埼玉県</option>
-              <option value="千葉県">千葉県</option>
-              <option value="東京都">東京都</option>
-              <option value="神奈川県">神奈川県</option>
-              <option value="新潟県">新潟県</option>
-              <option value="富山県">富山県</option>
-              <option value="石川県">石川県</option>
-              <option value="福井県">福井県</option>
-              <option value="山梨県">山梨県</option>
-              <option value="長野県">長野県</option>
-              <option value="岐阜県">岐阜県</option>
-              <option value="静岡県">静岡県</option>
-              <option value="愛知県">愛知県</option>
-              <option value="三重県">三重県</option>
-              <option value="滋賀県">滋賀県</option>
-              <option value="京都府">京都府</option>
-              <option value="大阪府">大阪府</option>
-              <option value="兵庫県">兵庫県</option>
-              <option value="奈良県">奈良県</option>
-              <option value="和歌山県">和歌山県</option>
-              <option value="鳥取県">鳥取県</option>
-              <option value="島根県">島根県</option>
-              <option value="岡山県">岡山県</option>
-              <option value="広島県">広島県</option>
-              <option value="山口県">山口県</option>
-              <option value="徳島県">徳島県</option>
-              <option value="香川県">香川県</option>
-              <option value="愛媛県">愛媛県</option>
-              <option value="高知県">高知県</option>
-              <option value="福岡県">福岡県</option>
-              <option value="佐賀県">佐賀県</option>
-              <option value="長崎県">長崎県</option>
-              <option value="熊本県">熊本県</option>
-              <option value="大分県">大分県</option>
-              <option value="宮崎県">宮崎県</option>
-              <option value="鹿児島県">鹿児島県</option>
-              <option value="沖縄県">沖縄県</option>
-            </select>
-            <label for="pref-name">都道府県名</label>
-          </div>
-          <div class="input-field col m6 s12">
-            <i class="material-icons prefix">train</i>
-            <input
-              id="station-name"
-              type="text"
-              class="validate"
-              v-model="station_name"
-            />
-            <label for="station-name">駅名</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <button class="btn waves-effect waves-light" type="submit">
-              Submit
-              <i class="material-icons right">send</i>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-
     <div>
-      message:
-      {{ message }}
+      <b-form @submit="onSubmit" @reset="onReset">
+        <b-form-row>
+          <b-form-group
+            id="input-pref"
+            class="col-md-6"
+            label="都道府県名"
+            label-for="pref-name"
+          >
+            <b-form-select
+              id="pref-name"
+              v-model="form.pref"
+              :options="prefectures"
+              required
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group
+            id="input-station"
+            class="col-md-6"
+            label="駅名"
+            label-for="station-name"
+          >
+            <b-form-input
+              id="station-name"
+              v-model="form.station"
+              type="text"
+              placeholder="駅名を入力してください"
+              required
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-form-row>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
     </div>
 
-    <div v-if="shop_list != null" class="col s12">
+    <div v-if="shop_list != null" class="col s12" id="main-content">
       <ul>
         <paginate name="paginate-items" :list="shop_list" :per="9">
           <div class="row shop-list">
@@ -125,24 +80,74 @@ export default {
   name: "page1",
   data() {
     return {
-      state: null,
       shop_list: null,
-      station_name: null,
-      pref_name: null,
       paginate: ["paginate-items"],
-      message: null,
-      is_ios: false,
+      form: {
+        pref: null,
+        station: null,
+      },
+      prefectures: [
+        { text: "都道府県を選択してください", value: null },
+        "北海道",
+        "青森県",
+        "岩手県",
+        "宮城県",
+        "秋田県",
+        "山形県",
+        "福島県",
+        "茨城県",
+        "栃木県",
+        "群馬県",
+        "埼玉県",
+        "千葉県",
+        "東京都",
+        "神奈川県",
+        "新潟県",
+        "富山県",
+        "石川県",
+        "福井県",
+        "山梨県",
+        "長野県",
+        "岐阜県",
+        "静岡県",
+        "愛知県",
+        "三重県",
+        "滋賀県",
+        "京都府",
+        "大阪府",
+        "兵庫県",
+        "奈良県",
+        "和歌山県",
+        "鳥取県",
+        "島根県",
+        "岡山県",
+        "広島県",
+        "山口県",
+        "徳島県",
+        "香川県",
+        "愛媛県",
+        "高知県",
+        "福岡県",
+        "佐賀県",
+        "長崎県",
+        "熊本県",
+        "大分県",
+        "宮崎県",
+        "鹿児島県",
+        "沖縄県",
+      ],
     };
   },
   methods: {
-    async post() {
-      // const url = "https://izakaya-search.herokuapp.com/test";
-      const url = "http://localhost:3000/test";
+    async onSubmit(event) {
+      event.preventDefault();
+      const url = "https://izakaya-search.herokuapp.com/test";
+      // const url = "http://localhost:3000/test";
       const response = await axios
         .get(url, {
           params: {
-            station_name: this.station_name,
-            pref_name: this.pref_name,
+            station_name: this.form.station,
+            pref_name: this.form.pref,
           },
         })
         .catch((err) => {
@@ -153,21 +158,9 @@ export default {
       this.shop_list = response.data.shop_list;
       console.log(this.shop_list);
     },
-    check_os: function () {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      if (
-        userAgent.indexOf("iphone") !== -1 ||
-        userAgent.indexOf("ipad") !== -1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+    onReset(event) {
+      event.preventDefault();
     },
-  },
-  mounted() {
-    M.AutoInit();
-    this.is_ios = this.check_os();
   },
 };
 </script>
@@ -193,5 +186,9 @@ a:hover {
 
 button {
   /* margin-left: auto; */
+}
+
+#main-content {
+  min-height: 100vh;
 }
 </style>
