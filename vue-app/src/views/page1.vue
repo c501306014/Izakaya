@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <form class="col s12">
+      <form class="col s12" @submit.prevent="post">
         <div class="row">
           <div class="input-field col m6 s12">
             <select
@@ -72,12 +72,7 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <button
-              class="btn waves-effect waves-light"
-              type="submit"
-              name="action"
-              @click="post"
-            >
+            <button class="btn waves-effect waves-light" type="submit">
               Submit
               <i class="material-icons right">send</i>
             </button>
@@ -146,11 +141,10 @@ export default {
   },
   methods: {
     async post() {
-      alert(this.pref_name);
-
+      // const url = "https://izakaya-search.herokuapp.com/test";
+      const url = "http://localhost:3000/test";
       const response = await axios
-        .get("https://izakaya-search.herokuapp.com/test", {
-          // .get("http://localhost:3000/test", {
+        .get(url, {
           params: {
             station_name: this.station_name,
             pref_name: this.pref_name,
