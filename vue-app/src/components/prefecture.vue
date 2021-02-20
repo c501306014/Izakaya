@@ -11,7 +11,6 @@
       :options="prefectures"
       required
     ></b-form-select>
-    <p>localParam:{{ localParam }}</p>
   </b-form-group>
 </template>
 

@@ -4,27 +4,11 @@
       <b-form @submit="onSubmit">
         <b-form-row>
           <selectPrefecture v-model="form.pref" />
-          <b-form-group
-            id="input-station"
-            class="col-md-6"
-            label="駅名"
-            label-for="station-name"
-          >
-            <b-form-input
-              id="station-name"
-              v-model="form.station"
-              type="text"
-              placeholder="駅名を入力してください"
-              required
-            >
-            </b-form-input>
-          </b-form-group>
+          <inputStation v-model="form.station" />
         </b-form-row>
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
-
-    <p>pref: {{ form.pref }}</p>
 
     <div v-if="shop_list != null">
       <ul>
@@ -70,11 +54,13 @@
 <script>
 import axios from "axios";
 import selectPrefecture from "@/components/prefecture.vue";
+import inputStation from "@/components/station.vue";
 
 export default {
   name: "page1",
   components: {
     selectPrefecture,
+    inputStation,
   },
   data() {
     return {
