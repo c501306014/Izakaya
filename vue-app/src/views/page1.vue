@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <b-form @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit">
         <b-form-row>
           <b-form-group
             id="input-pref"
@@ -33,16 +33,15 @@
           </b-form-group>
         </b-form-row>
         <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </div>
 
-    <div v-if="shop_list != null" class="col s12" id="main-content">
+    <div v-if="shop_list != null">
       <ul>
         <paginate name="paginate-items" :list="shop_list" :per="9">
-          <div class="row shop-list">
+          <div class="shop-list">
             <li
-              class="col l4 m6 s12"
+              class=""
               v-for="shop_data in paginated('paginate-items')"
               :key="shop_data.name"
             >
@@ -64,8 +63,13 @@
         class="pagination"
         :limit="6"
         :show-step-links="true"
+        :step-links="{
+          next: '>',
+          prev: '<',
+        }"
         :classes="{
-          'ul.paginate-links > li': 'waves-effect',
+          'ul.paginate-links > li': 'page-item',
+          'ul.paginate-links > li > a': 'page-link',
         }"
       >
       </paginate-links>
@@ -81,13 +85,17 @@ export default {
   data() {
     return {
       shop_list: null,
+      perPage: 3,
+      currentPage: 1,
+      rows: 1,
+
       paginate: ["paginate-items"],
       form: {
         pref: null,
         station: null,
       },
       prefectures: [
-        { text: "都道府県を選択してください", value: null },
+        { text: "都道府県を選択してください", value: null, disabled: true },
         "北海道",
         "青森県",
         "岩手県",
@@ -157,6 +165,7 @@ export default {
         });
       this.shop_list = response.data.shop_list;
       console.log(this.shop_list);
+      this.rows = this.shop_list.length;
     },
     onReset(event) {
       event.preventDefault();
@@ -182,13 +191,5 @@ a:hover {
 .shop-list {
   display: flex;
   flex-wrap: wrap;
-}
-
-button {
-  /* margin-left: auto; */
-}
-
-#main-content {
-  min-height: 100vh;
 }
 </style>
