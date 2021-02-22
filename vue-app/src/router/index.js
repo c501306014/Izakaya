@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import page1 from '@/views/page1.vue'
+import search from '@/views/search.vue'
 
 
 Vue.use(Router)
@@ -10,7 +10,7 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      component: page1
+      component: search
     },
   ]
 })
