@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <section>
+      <h1>使い方</h1>
+      <p>都道府県を選択し、駅名を入力してください。</p>
+      <p>例：東京都、東京</p>
+      <p>※駅名の末尾に「駅」を含めないでください。</p>
+    </section>
     <div>
       <b-form @submit="onSubmit">
         <b-form-row>
@@ -64,5 +70,9 @@ a:hover {
 
 .container {
   margin-top: 60px;
+}
+
+section {
+  margin: 5rem 0;
 }
 </style>
