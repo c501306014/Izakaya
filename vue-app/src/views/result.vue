@@ -48,6 +48,11 @@ export default {
       paginate: ["paginate-items"],
     };
   },
+  computed: {
+    shop_list: function () {
+      return this.$store.state.shop_list;
+    },
+  },
 };
 </script>
 

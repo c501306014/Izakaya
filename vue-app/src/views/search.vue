@@ -3,8 +3,8 @@
     <div>
       <b-form @submit="onSubmit">
         <b-form-row>
-          <selectPrefecture v-model="form.pref" />
-          <inputStation v-model="form.station" />
+          <selectPrefecture v-model="l_form.pref" />
+          <inputStation v-model="l_form.station" />
         </b-form-row>
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
@@ -25,10 +25,8 @@ export default {
   },
   data() {
     return {
-      shop_list: null,
-
       paginate: ["paginate-items"],
-      form: {
+      l_form: {
         pref: null,
         station: null,
       },
@@ -37,13 +35,14 @@ export default {
   methods: {
     async onSubmit(event) {
       event.preventDefault();
+      this.$store.commit("setForm", this.l_form);
       // const url = "https://izakaya-search.herokuapp.com/test";
       const url = "http://localhost:3000/test";
       const response = await axios
         .get(url, {
           params: {
-            station_name: this.form.station,
-            pref_name: this.form.pref,
+            station_name: this.$store.state.form.station,
+            pref_name: this.$store.state.form.pref,
           },
         })
         .catch((err) => {
@@ -51,8 +50,7 @@ export default {
           this.message = err.response.data["error"];
           alert(err.response.data["error"]);
         });
-      this.shop_list = response.data.shop_list;
-      console.log(this.shop_list);
+      this.$store.commit("setShopList", response.data.shop_list);
       this.$router.push("/result");
     },
   },
