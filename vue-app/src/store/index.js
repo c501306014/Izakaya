@@ -11,6 +11,7 @@ export default new Vuex.Store({
             station: ""
         },
         shop_list: null,
+        err_message: null,
     },
     mutations:{
         setForm(state, form){
@@ -18,6 +19,9 @@ export default new Vuex.Store({
         },
         setShopList(state, shop_list){
             state.shop_list = shop_list;
+        },
+        setErrMessage(state, err_message){
+            state.err_message = err_message;
         }
     }
 });

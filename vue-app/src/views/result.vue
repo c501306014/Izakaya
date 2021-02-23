@@ -18,6 +18,7 @@
       }"
     >
     </paginate-links>
+    <div v-if="shop_list == null">{{ err_message }}</div>
     <div v-if="shop_list != null">
       <ul>
         <paginate name="paginate-items" :list="shop_list" :per="9">
@@ -74,6 +75,9 @@ export default {
     },
     form: function () {
       return this.$store.state.form;
+    },
+    err_message: function () {
+      return this.$store.state.err_message;
     },
   },
 };
