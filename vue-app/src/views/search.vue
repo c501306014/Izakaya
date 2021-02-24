@@ -12,7 +12,10 @@
           <selectPrefecture v-model="l_form.pref" />
           <inputStation v-model="l_form.station" />
         </b-form-row>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button v-if="!is_loading" type="submit" variant="primary"
+          >Submit</b-button
+        >
+        <myLoading :is_loading="is_loading" :text="'検索中...'" />
       </b-form>
     </div>
     <div v-if="err_message === '0'">
@@ -28,12 +31,14 @@
 import axios from "axios";
 import selectPrefecture from "@/components/prefecture.vue";
 import inputStation from "@/components/station.vue";
+import myLoading from "@/components/loading.vue";
 
 export default {
   name: "search",
   components: {
     selectPrefecture,
     inputStation,
+    myLoading,
   },
   data() {
     return {
@@ -42,6 +47,7 @@ export default {
         pref: null,
         station: null,
       },
+      is_loading: false,
     };
   },
   methods: {
@@ -49,8 +55,11 @@ export default {
       event.preventDefault();
       this.$store.commit("setForm", this.l_form);
       this.$store.commit("setErrMessage", null);
-      // const url = "https://izakaya-search.herokuapp.com/";
-      const url = "http://localhost:3000/";
+
+      this.is_loading = true;
+
+      // const url = "https://izakaya-search.herokuapp.com/search";
+      const url = "http://localhost:3000/search";
       const response = await axios
         .get(url, {
           params: {
@@ -62,6 +71,9 @@ export default {
           console.log(err.response);
           this.$store.commit("setErrMessage", err.response.data["error"]);
         });
+
+      this.is_loading = false;
+
       if (this.err_message) {
         console.log(this.err_message);
         return;
