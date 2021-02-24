@@ -60,8 +60,10 @@
         >
         </paginate-links>
       </div>
-
-      <b-button variant="primary" @click="return_top">別の駅で探す</b-button>
+      <div class="buttons">
+        <b-button variant="primary" @click="push_top">別の駅で探す</b-button>
+        <b-button variant="danger" @click="scroll_top">上に戻る</b-button>
+      </div>
     </main>
   </div>
 </template>
@@ -87,19 +89,26 @@ export default {
     },
   },
   methods: {
-    return_top: function () {
+    push_top: function () {
       this.$router.push("/");
+    },
+    scroll_top: function () {
+      scrollTo(0, 0);
     },
   },
 };
 </script>
 
 <style scoped>
-p,
-li {
+p {
   padding: 0;
   text-align: center;
 }
+li {
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
 .pagination {
   justify-content: center;
 }
@@ -121,6 +130,13 @@ li {
   min-height: 80px;
   list-style: none;
   width: 33%;
+}
+
+.buttons {
+  max-width: 50rem;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-around;
 }
 
 @media screen and (max-width: 1024px) {

@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 app.listen(port);
 console.log('server started ' + port);
 
-app.get('/', function (req, res, next) {
+app.get('/search', function (req, res, next) {
   function main() {
     search_bar(req.query.station_name, req.query.pref_name);
   }
@@ -34,11 +34,18 @@ app.get('/', function (req, res, next) {
     const RailRes = await axios
       .get(RailURL)
       .catch(err => {
-        return res.status(400).send(err.response);
+        return err.response;
       })
 
     // リクエストされた駅が見つからなかった場合、bad requestとしてレスポンスを返して終了
-    if (!RailRes.data['response']['station'].length) {
+    if ('error' in RailRes.data['response']){
+      const err = new Error('0');
+      return res.status(400).send({
+        error: err.message,
+        data: RailRes.data['response']
+      });
+    }
+    else if (!RailRes.data['response']['station'].length) {
       const err = new Error('0');
       return res.status(400).send({
         error: err.message,

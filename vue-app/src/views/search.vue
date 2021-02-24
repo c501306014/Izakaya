@@ -71,8 +71,8 @@ export default {
 
       this.is_loading = true;
 
-      // const url = "https://izakaya-search.herokuapp.com/search";
-      const url = "http://localhost:3000/search";
+      const url = "https://izakaya-search.herokuapp.com/search";
+      // const url = "http://localhost:3000/search";
       const response = await axios
         .get(url, {
           params: {
