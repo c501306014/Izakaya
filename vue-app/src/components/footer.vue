@@ -31,5 +31,6 @@ footer {
 }
 p {
   margin: 1rem auto;
+  padding: 0;
 }
 </style>
