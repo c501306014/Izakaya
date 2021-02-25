@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <main>
-      <h1>居酒屋検索アプリ</h1>
+      <h1 class="head">居酒屋検索アプリ</h1>
       <section>
-        <h2>概要</h2>
+        <h2 class="head">概要</h2>
         <p>本アプリは、以下の条件を満たす居酒屋を検索するアプリです｡</p>
         <ul class="overview-list">
           <li>
@@ -13,13 +13,13 @@
         </ul>
       </section>
       <section>
-        <h2>使い方</h2>
+        <h2 class="head">使い方</h2>
         <p>都道府県を選択し､駅名を入力して下さい｡ <br />例：東京都、東京</p>
         <p class="text-danger">駅名末尾に「駅」を含めないでください｡</p>
       </section>
     </main>
     <section>
-      <h2>検索はこちら</h2>
+      <h2 class="head">検索はこちら</h2>
       <b-form @submit="onSubmit">
         <b-form-row>
           <selectPrefecture v-model="l_form.pref" />
@@ -111,5 +111,24 @@ export default {
 
 .overview-list li {
   line-height: 1.5em;
+}
+
+.head {
+  margin: 1em auto 0.5em auto;
+}
+
+h1 {
+  font-size: 3.2rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2.4rem;
+  padding-left: 0.5em;
+  border-left: solid 3px #dc3545;
+}
+
+h3 {
+  font-size: 2rem;
 }
 </style>

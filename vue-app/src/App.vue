@@ -37,30 +37,10 @@ body {
   margin: 0;
 }
 
-h1,
-h2,
-h3 {
-  margin: 1em auto 0.5em auto;
-}
-
-h1 {
-  font-size: 3.2rem;
-  text-align: center;
-}
-
-h2 {
-  font-size: 2.4rem;
-  padding-left: 0.5em;
-  border-left: solid 3px #dc3545;
-}
-
-h3 {
-  font-size: 2rem;
-}
-
 a,
 p,
 li,
+label,
 input[type="text"],
 input[type="search"] {
   font-size: 1.6rem;
@@ -68,14 +48,6 @@ input[type="search"] {
 
 p {
   padding-left: 1.5em;
-}
-
-.custom-select {
-  font-size: 1.6rem;
-}
-
-.btn {
-  font-size: 1.6rem;
 }
 
 #app {
@@ -93,5 +65,10 @@ p {
 .container {
   text-align: left;
   max-width: 120rem;
+}
+
+.custom-select,
+.btn {
+  font-size: 1.6rem !important;
 }
 </style>
