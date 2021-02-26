@@ -4,6 +4,27 @@
       <p>
         {{ form.pref }} {{ form.station }}駅の検索結果: {{ shop_list.length }}件
       </p>
+
+      <div>
+        <b-button v-b-toggle.filtering variant="primary">条件を絞る</b-button>
+        <b-button variant="danger" @click="reset_filter">
+          条件をリセット
+        </b-button>
+        <b-collapse id="filtering" class="mt-2">
+          <b-card>
+            <b-form name="filterForm" inline>
+              <b-form-select
+                v-model="selectedBudget"
+                :options="budgetOptions"
+              />
+              <b-form-select v-model="selectedGenre" :options="genreOptions" />
+            </b-form>
+          </b-card>
+        </b-collapse>
+        <p class="text-danger" v-show="!shop_list.length">
+          条件に合うお店は見つかりませんでした。条件を変更してみてください。
+        </p>
+      </div>
       <paginate-links
         v-if="shop_list.length !== 0"
         for="paginate-items"
@@ -26,19 +47,27 @@
           <paginate name="paginate-items" :list="shop_list" :per="9">
             <div class="shop-list">
               <li
-                class=""
                 v-for="shop_data in paginated('paginate-items')"
                 :key="shop_data.name"
               >
-                <a :href="shop_data.urls.pc">
+                <a class="shop_img" :href="shop_data.urls.pc">
                   <img :src="shop_data.photo.pc.l" alt="" />
                 </a>
-                <p>
-                  <a :href="shop_data.urls.pc"> {{ shop_data.name }}</a>
-                </p>
-                <p>
-                  {{ shop_data.budget.average }}
-                </p>
+                <a class="shop_link" :href="shop_data.urls.pc">
+                  {{ shop_data.name }}
+                </a>
+                <span class="shop_info_head">カテゴリ</span>
+                <span class="shop_info_content">
+                  {{ shop_data.genre.name }}
+                </span>
+                <span class="shop_info_head">予算</span>
+                <span class="shop_info_content">
+                  {{ shop_data.budget.name }}
+                </span>
+                <span class="shop_info_head">最大人数</span>
+                <span class="shop_info_content">
+                  {{ shop_data.party_capacity }}人
+                </span>
               </li>
             </div>
           </paginate>
@@ -69,18 +98,83 @@
 </template>
 
 <script>
+import Filtering from "../components/filtering.vue";
+
 export default {
   name: "result",
 
   data() {
     return {
       paginate: ["paginate-items"],
+      selectedBudget: null,
+      selectedGenre: null,
+      budgetOptions: [
+        { value: null, text: "予算を選んでください" },
+        { value: "～500円", text: "～500円" },
+        { value: "501～1000円", text: "501～1000円" },
+        { value: "1001～1500円", text: "1001～1500円" },
+        { value: "1501～2000円", text: "1501～2000円" },
+        { value: "2001～3000円", text: "2001～3000円" },
+        { value: "3001～4000円", text: "3001～4000円" },
+        { value: "4001～5000円", text: "4001～5000円" },
+        { value: "5001～7000円", text: "5001～7000円" },
+        { value: "7001～10000円", text: "7001～10000円" },
+        { value: "10001～15000円", text: "10001～15000円" },
+        { value: "15001～20000円", text: "15001～20000円" },
+        { value: "20001～30000円", text: "20001～30000円" },
+        { value: "30001円～", text: "30001円～" },
+      ],
+      genreOptions: [
+        { value: null, text: "ジャンルを選んでください" },
+        { value: "居酒屋", text: "居酒屋" },
+        { value: "ダイニングバー・バル", text: "ダイニングバー・バル" },
+        { value: "創作料理", text: "創作料理" },
+        { value: "和食", text: "和食" },
+        { value: "洋食", text: "洋食" },
+        { value: "イタリアン・フレンチ", text: "イタリアン・フレンチ" },
+        { value: "中華", text: "中華" },
+        { value: "焼肉・ホルモン", text: "焼肉・ホルモン" },
+        { value: "韓国料理", text: "韓国料理" },
+        { value: "アジア・エスニック料理", text: "アジア・エスニック料理" },
+        { value: "カラオケ・パーティ", text: "カラオケ・パーティ" },
+        { value: "バー・カクテル", text: "バー・カクテル" },
+        { value: "その他グルメ", text: "その他グルメ" },
+      ],
     };
+  },
+  components: {
+    Filtering,
   },
   computed: {
     shop_list: function () {
-      return this.$store.state.shop_list;
+      let l_shopList = this.$store.state.shop_list;
+      if (this.selectedBudget) {
+        l_shopList = l_shopList.filter(
+          (l_shopList) => l_shopList.budget.name === this.selectedBudget
+        );
+      }
+
+      if (this.selectedGenre) {
+        l_shopList = l_shopList.filter(
+          (l_shopList) => l_shopList.genre.name === this.selectedGenre
+        );
+      }
+
+      return l_shopList;
+      if (this.selectedGenre) {
+        return this.$store.state.shop_list.filter(
+          (shop_data) =>
+            shop_data.genre.name === this.selectedGenre &&
+            shop_data.budget.name === this.selectedBudget
+        );
+      }
+      return this.$store.state.shop_list.sort(function (a, b) {
+        if (a.budget.name < b.budget.name) return 1;
+        if (a.budget.name > b.budget.name) return -1;
+        return 0;
+      });
     },
+
     form: function () {
       return this.$store.state.form;
     },
@@ -94,6 +188,11 @@ export default {
     },
     scroll_top: function () {
       scrollTo(0, 0);
+    },
+    reset_filter: function () {
+      this.selectedGenre = null;
+      this.selectedBudget = null;
+      document.filterForm.reset();
     },
   },
 };
@@ -124,12 +223,32 @@ li {
 .shop-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .shop-list li {
+  display: grid;
+  grid-template-columns: 4rem 8rem 1fr;
+  grid-template-rows: auto auto auto auto auto;
   margin: 1rem 0;
   min-height: 80px;
   list-style: none;
-  width: 33%;
+  width: 30rem;
+}
+
+.shop_img {
+  grid-column: 1/4;
+}
+
+.shop_link {
+  grid-column: 1/4;
+}
+
+.shop_info_head {
+  grid-column: 2/3;
+  text-align: left;
+}
+.shop_info_content {
+  text-align: left;
 }
 
 .buttons {
@@ -137,11 +256,5 @@ li {
   margin: 1rem auto;
   display: flex;
   justify-content: space-around;
-}
-
-@media screen and (max-width: 1024px) {
-  .shop-list li {
-    width: 100%;
-  }
 }
 </style>

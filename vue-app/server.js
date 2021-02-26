@@ -29,7 +29,7 @@ app.get('/search', function (req, res, next) {
       .catch(err => {
         return res.status(400).send(err.response);
       });
-    
+
     // response to frontend
     const shop_list = hotpepperRes["data"]["results"]["shop"];
     res.send({
@@ -37,8 +37,20 @@ app.get('/search', function (req, res, next) {
     });
   }
 
+  const get_genre_master = async function(){
+    let hotpepperAPI_key = "dd28cf82f92a25dc";
+    let hotpepperURL = `http://webservice.recruit.co.jp/hotpepper/genre/v1/?key=${hotpepperAPI_key}`
+    const hotpepperRes = await axios
+    .get(hotpepperURL)
+    .catch(err => {
+      return res.status(400).send(err.response);
+    });
+    console.log(hotpepperRes["data"])
+  }
+
   // main function
   function main() {
+    // get_genre_master();
     search_bar(req.query);
   }
   main();
