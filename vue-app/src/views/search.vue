@@ -81,8 +81,11 @@ export default {
       const response = await axios
         .get(url, { params: this.stationPos })
         .catch((err) => {
-          // console.log(err.response);
-          // this.$store.commit("setErrMessage", err.response.data["error"]);
+          console.log(err.response);
+          this.$store.commit(
+            "setErrMessage",
+            "お店検索機能でエラーが発生しているようです。\n恐れ入りますがしばらく時間がたってからご利用ください。"
+          );
         });
 
       this.is_loading = false;
@@ -109,18 +112,19 @@ export default {
       });
 
       if ("error" in RailRes.data["response"]) {
-        // 存在しない駅を指定したとき
+        // 存在しない駅を指定したときのエラーメッセージをセット
         this.$store.commit(
           "setErrMessage",
           "お探しの駅名は存在しません｡他の駅名で検索してください｡\nヒント：駅名が間違っているかもしれません。"
         );
       } else if (!RailRes.data["response"]["station"].length) {
-        // 駅は存在するが選択した都道府県内にはなかったとき
+        // 駅は存在するが選択した都道府県内にはなかったときのエラーメッセージをセット
         this.$store.commit(
           "setErrMessage",
           "選択した都道府県内にお探しの駅が見つかりませんでした｡\nヒント：選択する都道府県が間違っているかもしれません。"
         );
       } else {
+        // 駅が存在したときはその座標を取得
         this.stationPos.X = RailRes.data["response"]["station"][0]["x"];
         this.stationPos.Y = RailRes.data["response"]["station"][0]["y"];
       }
