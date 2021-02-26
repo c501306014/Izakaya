@@ -73,18 +73,19 @@ export default {
       this.$store.commit("setErrMessage", null);
 
       this.is_loading = true;
-      await this.getStationPos();
 
-      // const url = "https://izakaya-search.herokuapp.com/search";
-      const url = "http://localhost:3000/search";
+      const url = "https://izakaya-search.herokuapp.com/search";
+      // const url = "http://localhost:3000/search";
       const response = await axios
-        .get(url, { params: this.stationPos })
+        .get(url, {
+          params: {
+            station_name: this.l_form.station,
+            pref_name: this.l_form.pref,
+          },
+        })
         .catch((err) => {
           console.log(err.response);
-          this.$store.commit(
-            "setErrMessage",
-            "お店検索機能でエラーが発生しているようです。\n恐れ入りますがしばらく時間がたってからご利用ください。"
-          );
+          this.$store.commit("setErrMessage", err.response.data["error"]);
         });
 
       this.is_loading = false;
@@ -94,73 +95,9 @@ export default {
         return;
       } else {
         this.$store.commit("setShopList", response.data.shop_list);
+        this.l_form.station = response.data.station;
+        this.$store.commit("setForm", this.l_form);
         this.$router.push("/result");
-      }
-    },
-    getStationPos: async function () {
-      // 駅名と都道府県名をURL用に変換
-      let station_name = encodeURI(this.l_form.station);
-      let pref_name = encodeURI(this.l_form.pref);
-      // heartrails APIをたたく
-      let RailURL = `http://express.heartrails.com/api/json?method=getStations&name=${station_name}&prefecture=${pref_name}`;
-      let RailRes = await axios.get(RailURL).catch((err) => {
-        this.$store.commit(
-          "setErrMessage",
-          "駅検索機能でエラーが発生しているようです。\n恐れ入りますがしばらく時間がたってからご利用ください。"
-        );
-      });
-
-      if ("error" in RailRes.data["response"]) {
-        // 存在しない駅を指定したとき
-        if (this.l_form.station.slice(-1) === "駅") {
-          // 駅名末尾に「駅」がついていたなら、末尾の「駅」を除いて検索リトライ
-          await this.retry_getStationPos();
-        } else {
-          this.$store.commit(
-            "setErrMessage",
-            "お探しの駅名は存在しません｡他の駅名で検索してください｡\nヒント：駅名が間違っているかもしれません。"
-          );
-        }
-      } else if (!RailRes.data["response"]["station"].length) {
-        // 駅は存在するが選択した都道府県内にはなかったときのエラーメッセージをセット
-        this.$store.commit(
-          "setErrMessage",
-          "選択した都道府県内にお探しの駅が見つかりませんでした｡\nヒント：選択する都道府県が間違っているかもしれません。"
-        );
-      } else {
-        // 駅が存在したときはその座標を取得
-        this.stationPos.X = RailRes.data["response"]["station"][0]["x"];
-        this.stationPos.Y = RailRes.data["response"]["station"][0]["y"];
-      }
-    },
-    retry_getStationPos: async function () {
-      this.l_form.station = this.l_form.station.slice(0, -1);
-      this.$store.commit("setForm", this.l_form);
-
-      const station_name = encodeURI(this.l_form.station);
-      const pref_name = encodeURI(this.l_form.pref);
-      const RailURL = `http://express.heartrails.com/api/json?method=getStations&name=${station_name}&prefecture=${pref_name}`;
-      const RailRes = await axios.get(RailURL).catch((err) => {
-        this.$store.commit(
-          "setErrMessage",
-          "駅検索機能でエラーが発生しているようです。\n恐れ入りますがしばらく時間がたってからご利用ください。"
-        );
-      });
-      if ("error" in RailRes.data["response"]) {
-        this.$store.commit(
-          "setErrMessage",
-          "お探しの駅名は存在しません｡他の駅名で検索してください｡\nヒント：駅名が間違っているかもしれません。"
-        );
-      } else if (!RailRes.data["response"]["station"].length) {
-        // 駅は存在するが選択した都道府県内にはなかったときのエラーメッセージをセット
-        this.$store.commit(
-          "setErrMessage",
-          "選択した都道府県内にお探しの駅が見つかりませんでした｡\nヒント：選択する都道府県が間違っているかもしれません。"
-        );
-      } else {
-        // 駅が存在したときはその座標を取得
-        this.stationPos.X = RailRes.data["response"]["station"][0]["x"];
-        this.stationPos.Y = RailRes.data["response"]["station"][0]["y"];
       }
     },
   },
