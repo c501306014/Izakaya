@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-navbar variant="warning">
-      <img src="../assets/images/title-logo.png" alt="" />
+      <h1>
+        <img src="../assets/images/title-logo.png" alt="居酒屋検索アプリ" />
+      </h1>
     </b-navbar>
   </div>
 </template>
@@ -13,8 +15,10 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  margin: 1.8rem auto;
+}
 img {
   height: 3.6rem;
-  margin: 1.8rem auto;
 }
 </style>

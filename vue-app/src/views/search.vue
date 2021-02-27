@@ -1,21 +1,39 @@
 <template>
   <div class="container">
     <main>
-      <h1 class="head">居酒屋検索アプリ</h1>
       <section>
         <h2 class="head">概要</h2>
-        <p>本アプリは、以下の条件を満たす居酒屋を検索するアプリです｡</p>
+        <p>
+          <strong
+            >大人数での飲み会を企画したい。大事な人とゆったり過ごしたい。</strong
+          ><br />
+          そんなあなたのお店探しをお手伝いします！
+        </p>
+        <p>
+          本アプリは、以下の条件を満たす居酒屋をホットペッパーグルメから検索するアプリです｡
+        </p>
         <ul class="overview-list">
           <li>
             指定された都道府県内に存在する駅から半径５００メートル圏内に存在する
           </li>
           <li>設備に「個室」が付いている</li>
         </ul>
+        <p>
+          細かい検索設定をしなくても駅近で個室付のお店をいい感じにピックアップします！<br />
+          お店の候補出し等にご利用ください(^^♪
+        </p>
+      </section>
+      <section>
+        <h2 class="head">こんな方にお勧め！</h2>
+        <ul class="overview-list">
+          <li>飲み会の幹事をされる方</li>
+          <li>個室でまったり飲みたい方</li>
+          <li>居酒屋の候補をある程度絞りたい方</li>
+        </ul>
       </section>
       <section>
         <h2 class="head">使い方</h2>
-        <p>都道府県を選択し､駅名を入力して下さい｡ <br />例：東京都、東京</p>
-        <p class="text-danger">駅名末尾に「駅」を含めないでください｡</p>
+        <p>都道府県・駅名を入力後、検索ボタンを押して下さい｡</p>
       </section>
     </main>
     <section>
@@ -25,7 +43,11 @@
           <selectPrefecture v-model="l_form.pref" />
           <inputStation v-model="l_form.station" />
         </b-form-row>
-        <b-button v-if="!is_loading" type="submit" variant="primary"
+        <b-button
+          id="search-btn"
+          v-if="!is_loading"
+          type="submit"
+          variant="primary"
           ><b-icon icon="search" /> 検索</b-button
         >
         <myLoading :is_loading="is_loading" :text="'検索中...'" />
@@ -139,5 +161,10 @@ h3 {
 
 .err-msg {
   white-space: pre-line;
+}
+
+#search-btn {
+  width: 100%;
+  padding: 0.8rem 0;
 }
 </style>

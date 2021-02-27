@@ -5,14 +5,24 @@
         {{ form.pref }} {{ form.station }}駅の検索結果: {{ shop_list.length }}件
       </p>
 
-      <div>
-        <b-button v-b-toggle.filtering variant="primary">条件を絞る</b-button>
-        <b-button variant="danger" @click="reset_filter">
-          条件をリセット
-        </b-button>
+      <div class="filtering-wrapper">
+        <div class="buttons">
+          <b-button
+            v-b-toggle.filtering
+            variant="primary"
+            @click="showFilter = !showFilter"
+          >
+            <span v-show="!showFilter"><b-icon icon="caret-down" /></span
+            ><span v-show="showFilter"><b-icon icon="caret-up" /></span
+            >条件を絞る
+          </b-button>
+          <b-button variant="danger" @click="reset_filter">
+            条件をリセット
+          </b-button>
+        </div>
         <b-collapse id="filtering" class="mt-2">
           <b-card>
-            <b-form name="filterForm" inline>
+            <b-form name="filterForm">
               <b-form-select
                 v-model="selectedBudget"
                 :options="budgetOptions"
@@ -106,6 +116,7 @@ export default {
   data() {
     return {
       paginate: ["paginate-items"],
+      showFilter: false,
       selectedBudget: null,
       selectedGenre: null,
       budgetOptions: [
@@ -161,18 +172,6 @@ export default {
       }
 
       return l_shopList;
-      if (this.selectedGenre) {
-        return this.$store.state.shop_list.filter(
-          (shop_data) =>
-            shop_data.genre.name === this.selectedGenre &&
-            shop_data.budget.name === this.selectedBudget
-        );
-      }
-      return this.$store.state.shop_list.sort(function (a, b) {
-        if (a.budget.name < b.budget.name) return 1;
-        if (a.budget.name > b.budget.name) return -1;
-        return 0;
-      });
     },
 
     form: function () {
@@ -227,12 +226,12 @@ li {
 }
 .shop-list li {
   display: grid;
-  grid-template-columns: 4rem 8rem 1fr;
+  grid-template-columns: 3rem 7.6rem 1fr;
   grid-template-rows: auto auto auto auto auto;
   margin: 1rem 0;
   min-height: 80px;
   list-style: none;
-  width: 30rem;
+  width: 32rem;
 }
 
 .shop_img {
@@ -256,5 +255,10 @@ li {
   margin: 1rem auto;
   display: flex;
   justify-content: space-around;
+}
+
+.card {
+  max-width: 50rem;
+  margin: auto;
 }
 </style>
