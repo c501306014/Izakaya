@@ -11,6 +11,7 @@ import VuePaginate from 'vue-paginate'
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VTooltip from 'v-tooltip'
 
 
 Vue.config.productionTip = false
@@ -18,7 +19,7 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueAxios, axios)
 Vue.use(VuePaginate)
-
+Vue.use(VTooltip)
 
 /* eslint-disable no-new */
 new Vue({
