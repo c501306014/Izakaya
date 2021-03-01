@@ -80,18 +80,12 @@
                 </span>
                 <span class="shop_info_head">コース</span>
                 <span class="shop_info_content">
-                  <b-button
-                    v-if="shop_data.free_drink.match(/あり/)"
-                    v-b-popover.hover.top="shop_data.free_drink"
-                  >
+                  <b-button v-show="shop_data.free_drink.match(/あり/)">
                     飲み放題
                   </b-button>
-                  <b-button
-                    v-if="shop_data.free_food.match(/あり/)"
-                    v-b-popover.hover.top="shop_data.free_food"
+                  <b-button v-show="shop_data.free_food.match(/あり/)"
+                    >食べ放題</b-button
                   >
-                    食べ放題
-                  </b-button>
                 </span>
               </li>
             </div>
