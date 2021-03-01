@@ -181,6 +181,9 @@ export default {
       return this.$store.state.err_message;
     },
   },
+  mounted() {
+    scrollTo(0, 0);
+  },
   methods: {
     push_top: function () {
       this.$router.push("/");
