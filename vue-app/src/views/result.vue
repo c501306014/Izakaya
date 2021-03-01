@@ -16,9 +16,8 @@
             ><span v-show="showFilter"><b-icon icon="caret-up" /></span
             >条件を絞る
           </b-button>
-          <b-button variant="danger" @click="reset_filter">
-            条件をリセット
-          </b-button>
+
+          <b-button variant="danger" @click="push_top">別の駅で探す</b-button>
         </div>
         <b-collapse id="filtering" class="mt-2">
           <b-card>
@@ -28,6 +27,9 @@
                 :options="budgetOptions"
               />
               <b-form-select v-model="selectedGenre" :options="genreOptions" />
+              <div class="reset-btn-wrapper">
+                <b-button @click="reset_filter"> 条件をリセット </b-button>
+              </div>
             </b-form>
           </b-card>
         </b-collapse>
@@ -51,10 +53,15 @@
         }"
       >
       </paginate-links>
-      <div v-if="shop_list == null">{{ err_message }}</div>
-      <div v-if="shop_list != null">
+      <div v-if="shop_list.length === 0">{{ err_message }}</div>
+      <div v-if="shop_list.length !== 0">
         <ul>
-          <paginate name="paginate-items" :list="shop_list" :per="9">
+          <paginate
+            ref="paginator"
+            name="paginate-items"
+            :list="shop_list"
+            :per="9"
+          >
             <div class="shop-list">
               <li
                 v-for="shop_data in paginated('paginate-items')"
@@ -107,9 +114,6 @@
           }"
         >
         </paginate-links>
-      </div>
-      <div class="buttons">
-        <b-button variant="primary" @click="push_top">別の駅で探す</b-button>
       </div>
       <scrollToTop />
     </main>
@@ -179,7 +183,6 @@ export default {
           (l_shopList) => l_shopList.genre.name === this.selectedGenre
         );
       }
-
       return l_shopList;
     },
 
@@ -221,6 +224,7 @@ li {
 }
 
 .pagination {
+  margin-top: 0.8rem;
   justify-content: center;
 }
 
@@ -273,5 +277,11 @@ li {
 .card {
   max-width: 50rem;
   margin: auto;
+}
+
+.reset-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.8rem;
 }
 </style>
