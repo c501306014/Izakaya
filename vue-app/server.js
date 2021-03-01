@@ -54,9 +54,15 @@ app.get('/search', function (req, res, next) {
         // それでも駅名が存在しなかった場合
         if ('error' in RailRes.data['response']) {
           err = new Error("お探しの駅名は存在しません｡他の駅名で検索してください｡\nヒント：駅名が間違っているかもしれません。");
+          return res.status(400).send({
+            error: err.message,
+          });
         } // 駅名は存在するが都道府県内になかった場合
         else if (!RailRes.data['response']['station'].length) {
           err = new Error('選択した都道府県内にお探しの駅が見つかりませんでした｡\nヒント：選択する都道府県が間違っているかもしれません。');
+          return res.status(400).send({
+            error: err.message,
+          });
         }
       } else {
         // エラーメッセージをレスポンスして終了
@@ -75,7 +81,7 @@ app.get('/search', function (req, res, next) {
         error: err.message,
       });
     }
-  
+  console.log("testfdsjkl;fdaskl;jasfdjkl;fdsakl;jdasfklj;fdasjkl;fdasl;jkasfdlk;jfdaskl;jafds")
   let X = RailRes.data['response']['station'][0]['x'];
   let Y = RailRes.data['response']['station'][0]['y'];
 
