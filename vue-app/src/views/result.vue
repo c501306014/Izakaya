@@ -78,6 +78,21 @@
                 <span class="shop_info_content">
                   {{ shop_data.party_capacity }}人
                 </span>
+                <span class="shop_info_head">コース</span>
+                <span class="shop_info_content">
+                  <b-button
+                    v-if="shop_data.free_drink.match(/あり/)"
+                    v-b-popover.hover.top="shop_data.free_drink"
+                  >
+                    飲み放題
+                  </b-button>
+                  <b-button
+                    v-if="shop_data.free_food.match(/あり/)"
+                    v-b-popover.hover.top="shop_data.free_food"
+                  >
+                    食べ放題
+                  </b-button>
+                </span>
               </li>
             </div>
           </paginate>
