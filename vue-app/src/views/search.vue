@@ -2,6 +2,28 @@
   <div class="container">
     <main>
       <section>
+        <h2 class="head">居酒屋の検索はこちら</h2>
+        <b-form @submit="onSubmit">
+          <b-form-row>
+            <selectPrefecture v-model="l_form.pref" />
+            <inputStation v-model="l_form.station" />
+          </b-form-row>
+          <b-button
+            id="search-btn"
+            v-if="!is_loading"
+            type="submit"
+            variant="primary"
+            ><b-icon icon="search" /> 検索</b-button
+          >
+          <myLoading :is_loading="is_loading" :text="'検索中...'" />
+        </b-form>
+        <div v-if="err_message">
+          <p class="text-danger err-msg">
+            {{ err_message }}
+          </p>
+        </div>
+      </section>
+      <section>
         <h2 class="head">概要</h2>
         <p>
           <strong
@@ -35,29 +57,8 @@
         <h2 class="head">使い方</h2>
         <p>都道府県・駅名を入力後、検索ボタンを押して下さい｡</p>
       </section>
+      <scrollToTop />
     </main>
-    <section>
-      <h2 class="head">検索はこちら</h2>
-      <b-form @submit="onSubmit">
-        <b-form-row>
-          <selectPrefecture v-model="l_form.pref" />
-          <inputStation v-model="l_form.station" />
-        </b-form-row>
-        <b-button
-          id="search-btn"
-          v-if="!is_loading"
-          type="submit"
-          variant="primary"
-          ><b-icon icon="search" /> 検索</b-button
-        >
-        <myLoading :is_loading="is_loading" :text="'検索中...'" />
-      </b-form>
-      <div v-if="err_message">
-        <p class="text-danger err-msg">
-          {{ err_message }}
-        </p>
-      </div>
-    </section>
   </div>
 </template>
 
@@ -66,6 +67,7 @@ import axios from "axios";
 import selectPrefecture from "@/components/prefecture.vue";
 import inputStation from "@/components/station.vue";
 import myLoading from "@/components/loading.vue";
+import scrollToTop from "@/components/scrollToTop.vue";
 
 export default {
   name: "search",
@@ -73,6 +75,7 @@ export default {
     selectPrefecture,
     inputStation,
     myLoading,
+    scrollToTop,
   },
   data() {
     return {
@@ -123,6 +126,7 @@ export default {
       }
     },
   },
+
   computed: {
     err_message: function () {
       return this.$store.state.err_message;
@@ -161,10 +165,5 @@ h3 {
 
 .err-msg {
   white-space: pre-line;
-}
-
-#search-btn {
-  width: 100%;
-  padding: 0.8rem 0;
 }
 </style>

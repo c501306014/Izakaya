@@ -110,16 +110,20 @@
       </div>
       <div class="buttons">
         <b-button variant="primary" @click="push_top">別の駅で探す</b-button>
-        <b-button variant="danger" @click="scroll_top">上に戻る</b-button>
       </div>
+      <scrollToTop />
     </main>
   </div>
 </template>
 
 <script>
+import scrollToTop from "@/components/scrollToTop.vue";
+
 export default {
   name: "result",
-
+  components: {
+    scrollToTop,
+  },
   data() {
     return {
       paginate: ["paginate-items"],
@@ -192,6 +196,7 @@ export default {
   methods: {
     push_top: function () {
       this.$router.push("/");
+      scrollTo(0, 0);
     },
     scroll_top: function () {
       scrollTo(0, 0);
