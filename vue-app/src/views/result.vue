@@ -24,9 +24,14 @@
             <b-form name="filterForm">
               <b-form-select
                 v-model="selectedBudget"
+                @change="goToFirstPage"
                 :options="budgetOptions"
               />
-              <b-form-select v-model="selectedGenre" :options="genreOptions" />
+              <b-form-select
+                v-model="selectedGenre"
+                @change="goToFirstPage"
+                :options="genreOptions"
+              />
               <div class="reset-btn-wrapper">
                 <b-button @click="reset_filter"> 条件をリセット </b-button>
               </div>
@@ -208,6 +213,12 @@ export default {
       this.selectedGenre = null;
       this.selectedBudget = null;
       document.filterForm.reset();
+      this.goToFirstPage();
+    },
+    goToFirstPage: function () {
+      if (this.$refs.paginator) {
+        this.$refs.paginator.goToPage(1);
+      }
     },
   },
 };
