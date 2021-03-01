@@ -108,8 +108,6 @@
 </template>
 
 <script>
-import Filtering from "../components/filtering.vue";
-
 export default {
   name: "result",
 
@@ -153,9 +151,7 @@ export default {
       ],
     };
   },
-  components: {
-    Filtering,
-  },
+
   computed: {
     shop_list: function () {
       let l_shopList = this.$store.state.shop_list;
