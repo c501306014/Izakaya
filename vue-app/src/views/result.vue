@@ -92,11 +92,17 @@
                 </span>
                 <span class="shop_info_head">コース</span>
                 <span class="shop_info_content">
-                  <b-button v-show="shop_data.free_drink.match(/あり/)">
-                    飲み放題
-                  </b-button>
-                  <b-button v-show="shop_data.free_food.match(/あり/)"
-                    >食べ放題</b-button
+                  <span
+                    class="course-info bg-warning"
+                    v-show="shop_data.free_drink.match(/あり/)"
+                  >
+                    飲み放題有
+                  </span>
+                  <span
+                    class="course-info bg-warning"
+                    variant="warning"
+                    v-show="shop_data.free_food.match(/あり/)"
+                    >食べ放題有</span
                   >
                 </span>
               </li>
@@ -294,5 +300,15 @@ li {
   display: flex;
   justify-content: center;
   margin-top: 0.8rem;
+}
+
+.course-info {
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  font-size: 1.2rem;
+}
+.course-info:hover {
+  cursor: default;
 }
 </style>
