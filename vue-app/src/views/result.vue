@@ -272,8 +272,19 @@ li {
   grid-column: 1/4;
 }
 
+.shop_img img {
+  border-radius: 5%;
+  filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.3));
+  transition: 0.2s;
+}
+
+.shop_img img:hover {
+  transform: scale(1.05, 1.05);
+}
+
 .shop_link {
   grid-column: 1/4;
+  margin-top: 1rem;
 }
 
 .shop_info_head {
