@@ -12,6 +12,7 @@ import VueScrollTo from 'vue-scrollto'
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './directive'
 
 
 Vue.config.productionTip = false
