@@ -72,39 +72,41 @@
                 v-for="shop_data in paginated('paginate-items')"
                 :key="shop_data.name"
               >
-                <a class="shop_img" :href="shop_data.urls.pc">
-                  <img :src="shop_data.photo.pc.l" alt="" />
-                </a>
-                <a class="shop_link" :href="shop_data.urls.pc">
-                  {{ shop_data.name }}
-                </a>
-                <span class="shop_info_head">カテゴリ</span>
-                <span class="shop_info_content">
-                  {{ shop_data.genre.name }}
-                </span>
-                <span class="shop_info_head">予算</span>
-                <span class="shop_info_content">
-                  {{ shop_data.budget.name }}
-                </span>
-                <span class="shop_info_head">最大人数</span>
-                <span class="shop_info_content">
-                  {{ shop_data.party_capacity }}人
-                </span>
-                <span class="shop_info_head">コース</span>
-                <span class="shop_info_content">
-                  <span
-                    class="course-info bg-warning"
-                    v-show="shop_data.free_drink.match(/あり/)"
-                  >
-                    飲み放題有
+                <div>
+                  <a class="shop_img" :href="shop_data.urls.pc">
+                    <img :src="shop_data.photo.pc.l" alt="" />
+                  </a>
+                  <a class="shop_link" :href="shop_data.urls.pc">
+                    {{ shop_data.name }}
+                  </a>
+                  <span class="shop_info_head">カテゴリ</span>
+                  <span class="shop_info_content">
+                    {{ shop_data.genre.name }}
                   </span>
-                  <span
-                    class="course-info bg-warning"
-                    variant="warning"
-                    v-show="shop_data.free_food.match(/あり/)"
-                    >食べ放題有</span
-                  >
-                </span>
+                  <span class="shop_info_head">予算</span>
+                  <span class="shop_info_content">
+                    {{ shop_data.budget.name }}
+                  </span>
+                  <span class="shop_info_head">最大人数</span>
+                  <span class="shop_info_content">
+                    {{ shop_data.party_capacity }}人
+                  </span>
+                  <span class="shop_info_head">コース</span>
+                  <span class="shop_info_content">
+                    <span
+                      class="course-info bg-warning"
+                      v-show="shop_data.free_drink.match(/あり/)"
+                    >
+                      飲み放題有
+                    </span>
+                    <span
+                      class="course-info bg-warning"
+                      variant="warning"
+                      v-show="shop_data.free_food.match(/あり/)"
+                      >食べ放題有</span
+                    >
+                  </span>
+                </div>
               </li>
             </div>
           </paginate>
@@ -238,6 +240,7 @@ p {
 li {
   padding: 0 1.5rem;
   text-align: center;
+  list-style: none;
 }
 
 .pagination {
@@ -258,7 +261,7 @@ li {
   flex-wrap: wrap;
   justify-content: center;
 }
-.shop-list li {
+.shop-list li div {
   display: grid;
   grid-template-columns: 3rem 7.6rem 1fr;
   grid-template-rows: auto auto auto auto auto;
@@ -269,6 +272,7 @@ li {
 }
 
 .shop_img {
+  min-height: 24rem;
   grid-column: 1/4;
 }
 
@@ -321,5 +325,11 @@ li {
 }
 .course-info:hover {
   cursor: default;
+}
+
+@media screen and (max-width: 746px) {
+  .shop_img {
+    min-height: auto;
+  }
 }
 </style>
