@@ -79,10 +79,8 @@ export default {
       this.$store.commit("setSearchStart", this.$store.state.search_start + 36);
       this.is_loading = true;
 
-      // const url = "https://izakaya-search.herokuapp.com/search";
-      const url = "http://localhost:3000/search";
       const response = await axios
-        .get(url, {
+        .get(this.$store.state.server_url, {
           params: {
             station_name: this.$store.state.form.station,
             pref_name: this.$store.state.form.pref,

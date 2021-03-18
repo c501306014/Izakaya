@@ -100,10 +100,8 @@ export default {
 
       this.is_loading = true;
 
-      const url = "https://izakaya-search.herokuapp.com/search";
-      // const url = "http://localhost:3000/search";
       const response = await axios
-        .get(url, {
+        .get(this.$store.state.server_url, {
           params: {
             station_name: this.l_form.station,
             pref_name: this.l_form.pref,
