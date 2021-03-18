@@ -41,7 +41,7 @@ export default {
 <style scoped>
 .to-top-btn-wrapper {
   position: sticky;
-  bottom: 10px;
+  bottom: 24px;
   display: flex;
   justify-content: flex-end;
 }
