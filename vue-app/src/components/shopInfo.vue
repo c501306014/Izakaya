@@ -95,6 +95,16 @@ export default {
   text-align: left;
 }
 
+.course-info {
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  font-size: 1.2rem;
+}
+.course-info:hover {
+  cursor: default;
+}
+
 @media screen and (max-width: 746px) {
   .shop_img {
     min-height: auto;
