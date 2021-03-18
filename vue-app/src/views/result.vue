@@ -42,58 +42,16 @@
           条件に合うお店は見つかりませんでした。条件を変更してみてください。
         </p>
       </div>
-      <paginate-links
-        v-if="shop_list.length !== 0"
-        for="paginate-items"
-        class="pagination"
-        :limit="6"
-        :show-step-links="true"
-        :step-links="{
-          next: '>',
-          prev: '<',
-        }"
-        :classes="{
-          'ul.paginate-links > li': 'page-item',
-          'ul.paginate-links > li > a': 'page-link',
-        }"
-      >
-      </paginate-links>
       <div v-if="shop_list.length === 0">{{ err_message }}</div>
       <div v-if="shop_list.length !== 0">
         <ul>
-          <paginate
-            ref="paginator"
-            name="paginate-items"
-            :list="shop_list"
-            :per="9"
-          >
-            <div class="shop-list">
-              <li
-                v-for="shop_data in paginated('paginate-items')"
-                :key="shop_data.name"
-              >
-                <shopInfo :shop_data="shop_data" />
-                <div v-scroll="infiniteHandler"></div>
-              </li>
-            </div>
-          </paginate>
+          <div class="shop-list">
+            <li v-for="shop_data in shop_list" :key="shop_data.name">
+              <shopInfo :shop_data="shop_data" />
+              <div v-scroll="infiniteHandler"></div>
+            </li>
+          </div>
         </ul>
-        <paginate-links
-          v-if="shop_list.length !== 0"
-          for="paginate-items"
-          class="pagination"
-          :limit="6"
-          :show-step-links="true"
-          :step-links="{
-            next: '>',
-            prev: '<',
-          }"
-          :classes="{
-            'ul.paginate-links > li': 'page-item',
-            'ul.paginate-links > li > a': 'page-link',
-          }"
-        >
-        </paginate-links>
       </div>
       <scrollToTop />
     </main>
