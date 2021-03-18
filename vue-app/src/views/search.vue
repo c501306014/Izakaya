@@ -120,6 +120,7 @@ export default {
         return;
       } else {
         this.$store.commit("setShopList", response.data.shop_list);
+        this.$store.commit("setFilteredShopList", response.data.shop_list);
         this.l_form.station = response.data.station;
         this.$store.commit("setForm", this.l_form);
         this.$router.push("/result");
