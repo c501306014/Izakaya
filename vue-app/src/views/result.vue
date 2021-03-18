@@ -73,6 +73,7 @@
                 :key="shop_data.name"
               >
                 <shopInfo :shop_data="shop_data" />
+                <div v-scroll="infiniteHandler"></div>
               </li>
             </div>
           </paginate>
@@ -147,6 +148,7 @@ export default {
         { value: "バー・カクテル", text: "バー・カクテル" },
         { value: "その他グルメ", text: "その他グルメ" },
       ],
+      startScrollYOffset: 0,
     };
   },
 
@@ -176,6 +178,7 @@ export default {
   },
   mounted() {
     scrollTo(0, 0);
+    this.startScrollYOffset = Math.floor(innerHeight / 3);
   },
   methods: {
     push_top: function () {
@@ -194,6 +197,11 @@ export default {
     goToFirstPage: function () {
       if (this.$refs.paginator) {
         this.$refs.paginator.goToPage(1);
+      }
+    },
+    infiniteHandler() {
+      if (pageYOffset >= this.startScrollYOffset) {
+        this.startScrollYOffset = innerHeight + pageYOffset;
       }
     },
   },
@@ -255,15 +263,5 @@ li {
   display: flex;
   justify-content: center;
   margin-top: 0.8rem;
-}
-
-.course-info {
-  display: inline-block;
-  padding: 0.4rem 0.6rem;
-  border-radius: 3px;
-  font-size: 1.2rem;
-}
-.course-info:hover {
-  cursor: default;
 }
 </style>
