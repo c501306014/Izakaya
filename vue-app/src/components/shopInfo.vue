@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ fadeIn: visible, hidden: !visible }" v-scroll="fadeIn">
     <a class="shop_img" :href="shop_data.urls.pc">
       <img :src="shop_data.photo.pc.l" alt="" />
     </a>
@@ -38,10 +38,35 @@
 export default {
   name: "shopInfo",
   props: ["shop_data"],
+  data() {
+    return {
+      visible: false,
+    };
+  },
+  methods: {
+    fadeIn: function () {
+      if (!this.visible) {
+        let top = this.$el.getBoundingClientRect().top;
+        this.visible = top < window.innerHeight - 100;
+      }
+    },
+  },
+  mounted: function () {
+    this.fadeIn();
+  },
 };
 </script>
 
 <style scoped>
+.hidden {
+  opacity: 0;
+}
+
+.fadeIn {
+  transition: 0.5s;
+  opacity: 1;
+}
+
 .shop_img {
   min-height: 24rem;
   grid-column: 1/4;
