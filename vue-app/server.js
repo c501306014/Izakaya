@@ -19,7 +19,7 @@ app.listen(port);
 console.log('server started ' + port);
 
 app.get('/search', function (req, res, next) {
-  const search_bar = async function (station_name, pref_name) {
+  const search_bar = async function (station_name, pref_name, search_start) {
     // start 駅の座標を取得
     // 駅名と都道府県名をURL用に変換
     let err = null;
@@ -81,13 +81,13 @@ app.get('/search', function (req, res, next) {
         error: err.message,
       });
     }
-  console.log("testfdsjkl;fdaskl;jasfdjkl;fdsakl;jdasfklj;fdasjkl;fdasl;jkasfdlk;jfdaskl;jafds")
+
   let X = RailRes.data['response']['station'][0]['x'];
   let Y = RailRes.data['response']['station'][0]['y'];
 
   // request to Hotpepper API
   let hotpepperAPI_key = "dd28cf82f92a25dc";
-  let hotpepperURL = `http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${hotpepperAPI_key}&lat=${Y}&lng=${X}&free_drink=1&private_room=1&course=1range=2&count=100&order=1&format=json`;
+  let hotpepperURL = `http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${hotpepperAPI_key}&lat=${Y}&lng=${X}&free_drink=1&private_room=1&course=1&range=2&start=${search_start}&count=36&order=1&format=json`;
   const hotpepperRes = await axios
     .get(hotpepperURL)
     .catch(err => {
@@ -96,10 +96,10 @@ app.get('/search', function (req, res, next) {
           error: err.message,
         });
     });
-
+  
   // response to frontend
   const shop_list = hotpepperRes["data"]["results"]["shop"];
-
+  
   if(station_name.slice(-1) === "駅"){
     res.send({
       shop_list: shop_list,
@@ -129,7 +129,7 @@ const get_genre_master = async function () {
 // main function
 function main() {
   // get_genre_master();
-  search_bar(req.query.station_name, req.query.pref_name);
+  search_bar(req.query.station_name, req.query.pref_name, req.query.search_start);
 
 }
 main();

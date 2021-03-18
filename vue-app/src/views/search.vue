@@ -96,6 +96,7 @@ export default {
       event.preventDefault();
       this.$store.commit("setForm", this.l_form);
       this.$store.commit("setErrMessage", null);
+      this.$store.commit("setSearchStart", 1);
 
       this.is_loading = true;
 
@@ -106,6 +107,7 @@ export default {
           params: {
             station_name: this.l_form.station,
             pref_name: this.l_form.pref,
+            search_start: this.$store.state.search_start,
           },
         })
         .catch((err) => {
