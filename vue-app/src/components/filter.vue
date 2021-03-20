@@ -16,8 +16,8 @@
     <b-collapse id="filtering" class="mt-2">
       <b-card>
         <b-form name="filterForm">
-          <b-form-select v-model="selectedBudget" :options="budgetOptions" />
-          <b-form-select v-model="selectedGenre" :options="genreOptions" />
+          <b-form-select v-model="budget" :options="budgetOptions" />
+          <b-form-select v-model="genre" :options="genreOptions" />
           <div class="reset-btn-wrapper">
             <b-button @click="reset_filter"> 条件をリセット </b-button>
           </div>
@@ -37,8 +37,6 @@ export default {
   data: function () {
     return {
       showFilter: false,
-      selectedBudget: null,
-      selectedGenre: null,
       budgetOptions: [
         { value: null, text: "予算を選んでください" },
         { value: "～500円", text: "～500円" },
@@ -75,8 +73,8 @@ export default {
   },
   methods: {
     reset_filter: function () {
-      this.selectedGenre = null;
-      this.selectedBudget = null;
+      this.$store.commit("setShopFilterBudget", null);
+      this.$store.commit("setShopFilterGenre", null);
       document.filterForm.reset();
     },
     push_top: function () {
@@ -84,18 +82,37 @@ export default {
       scrollTo(0, 0);
     },
   },
+  mounted() {
+    this.reset_filter();
+  },
   computed: {
+    budget: {
+      get() {
+        return this.$store.state.shop_filter.budget;
+      },
+      set(value) {
+        this.$store.commit("setShopFilterBudget", value);
+      },
+    },
+    genre: {
+      get() {
+        return this.$store.state.shop_filter.genre;
+      },
+      set(value) {
+        this.$store.commit("setShopFilterGenre", value);
+      },
+    },
     shop_list: function () {
       let l_shopList = this.$store.state.shop_list;
-      if (this.selectedBudget) {
+      if (this.budget) {
         l_shopList = this.$store.state.shop_list.filter(
-          (l_shopList) => l_shopList.budget.name === this.selectedBudget
+          (l_shopList) => l_shopList.budget.name === this.budget
         );
       }
 
-      if (this.selectedGenre) {
+      if (this.genre) {
         l_shopList = l_shopList.filter(
-          (l_shopList) => l_shopList.genre.name === this.selectedGenre
+          (l_shopList) => l_shopList.genre.name === this.genre
         );
       }
       this.$store.commit("setFilteredShopList", l_shopList);
