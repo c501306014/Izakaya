@@ -18,6 +18,14 @@
         <b-form name="filterForm">
           <b-form-select v-model="budget" :options="budgetOptions" />
           <b-form-select v-model="genre" :options="genreOptions" />
+          <b-form-checkbox
+            class="checkbox"
+            size="lg"
+            v-model="isLiked"
+            :value="true"
+            :unchecked-value="false"
+            >お気に入りのみ表示</b-form-checkbox
+          >
           <div class="reset-btn-wrapper">
             <b-button @click="reset_filter"> 条件をリセット </b-button>
           </div>
@@ -69,12 +77,14 @@ export default {
         { value: "バー・カクテル", text: "バー・カクテル" },
         { value: "その他グルメ", text: "その他グルメ" },
       ],
+      isLiked: false,
     };
   },
   methods: {
     reset_filter: function () {
       this.$store.commit("setShopFilterBudget", null);
       this.$store.commit("setShopFilterGenre", null);
+      this.isLiked = false;
       document.filterForm.reset();
     },
     push_top: function () {
@@ -104,8 +114,15 @@ export default {
     },
     shop_list: function () {
       let l_shopList = this.$store.state.shop_list;
-      if (this.budget) {
+
+      if (this.isLiked) {
         l_shopList = this.$store.state.shop_list.filter(
+          (l_shopList) => l_shopList.isLiked === true
+        );
+      }
+
+      if (this.budget) {
+        l_shopList = l_shopList.filter(
           (l_shopList) => l_shopList.budget.name === this.budget
         );
       }
@@ -139,5 +156,10 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 0.8rem;
+}
+
+.checkbox {
+  margin: 1em 0;
+  line-height: 1.5em;
 }
 </style>
