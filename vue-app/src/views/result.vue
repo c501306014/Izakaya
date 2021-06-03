@@ -99,6 +99,8 @@ export default {
       } else if (response.data.shop_list.length === 0) {
         this.is_complete = true;
       } else {
+        response.data.shop_list.map((shop_data) => (shop_data.isLiked = false));
+        console.log(response.data.shop_list[0]);
         this.$store.commit(
           "setShopList",
           this.$store.state.shop_list.concat(response.data.shop_list)

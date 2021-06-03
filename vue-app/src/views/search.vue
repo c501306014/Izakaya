@@ -119,6 +119,8 @@ export default {
         console.log(this.err_message);
         return;
       } else {
+        response.data.shop_list.map((shop_data) => (shop_data.isLiked = false));
+
         this.$store.commit("setShopList", response.data.shop_list);
         this.$store.commit("setFilteredShopList", response.data.shop_list);
         this.l_form.station = response.data.station;
