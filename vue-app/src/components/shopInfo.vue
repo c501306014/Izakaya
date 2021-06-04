@@ -6,6 +6,24 @@
     <a class="shop_link" :href="shop_data.urls.pc">
       {{ shop_data.name }}
     </a>
+    <b-button
+      v-show="!shop_data.isLiked"
+      @click="add_like"
+      class="like-btn"
+      variant="outline-danger"
+      >お気に入り登録</b-button
+    >
+    <b-button
+      v-show="shop_data.isLiked"
+      @click="add_like"
+      class="like-btn"
+      variant="danger"
+      >お気に入り登録済み</b-button
+    >
+    <!-- <span class="shop_info_content">
+      {{ shop_data.isLiked }}
+    </span> -->
+
     <span class="shop_info_head">カテゴリ</span>
     <span class="shop_info_content">
       {{ shop_data.genre.name }}
@@ -44,6 +62,14 @@ export default {
     };
   },
   methods: {
+    add_like: function () {
+      this.shop_data.isLiked = !this.shop_data.isLiked;
+      if (this.shop_data.isLiked) {
+        this.$store.commit("pushLikedShopData", this.shop_data);
+      } else {
+        this.$store.commit("removeLikedShopData", this.shop_data);
+      }
+    },
     fadeIn: function () {
       if (!this.visible) {
         let top = this.$el.getBoundingClientRect().top;
@@ -52,6 +78,12 @@ export default {
     },
   },
   mounted: function () {
+    const isLiked = this.$store.state.liked_shop_list.filter(
+      (shop_data) => shop_data.id === this.shop_data.id
+    );
+    if (isLiked.length) {
+      this.shop_data.isLiked = true;
+    }
     this.fadeIn();
   },
 };
@@ -87,6 +119,9 @@ export default {
   margin-top: 1rem;
 }
 
+.like-btn {
+  grid-column: 2/4;
+}
 .shop_info_head {
   grid-column: 2/3;
   text-align: left;

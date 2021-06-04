@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <main>
-      <shopFilter />
+      <shopFilter :p_shop_list="p_shop_list" />
+      <b-button @click="push_liked" class="liked-btn" variant="success"
+        >お気に入り一覧を見る</b-button
+      >
       <div v-if="shop_list.length === 0">{{ err_message }}</div>
       <div v-if="shop_list.length !== 0">
         <ul>
@@ -51,7 +54,9 @@ export default {
     shop_list: function () {
       return this.$store.state.filtered_shop_list;
     },
-
+    p_shop_list: function () {
+      return this.$store.state.shop_list;
+    },
     form: function () {
       return this.$store.state.form;
     },
@@ -64,6 +69,10 @@ export default {
     this.ShopListElement = this.$refs.shop_list;
   },
   methods: {
+    push_liked: function () {
+      // this.$router.push("/liked");
+      this.$router.push({ name: "Liked", params: { from_result: true } });
+    },
     infiniteHandler: function () {
       let clientRect = this.ShopListElement.getBoundingClientRect();
 
@@ -100,7 +109,6 @@ export default {
         this.is_complete = true;
       } else {
         response.data.shop_list.map((shop_data) => (shop_data.isLiked = false));
-        console.log(response.data.shop_list[0]);
         this.$store.commit(
           "setShopList",
           this.$store.state.shop_list.concat(response.data.shop_list)
@@ -135,5 +143,12 @@ li {
   min-height: 80px;
   list-style: none;
   width: 32rem;
+}
+
+.liked-btn {
+  display: block;
+  margin: auto;
+  max-width: 30rem;
+  width: 100%;
 }
 </style>

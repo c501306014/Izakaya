@@ -10,7 +10,7 @@
         <span v-show="showFilter"><b-icon icon="caret-up" /></span>
         条件を絞る
       </b-button>
-      <b-button variant="danger" @click="push_top">別の駅で探す</b-button>
+      <b-button variant="danger" @click="push_top">トップに戻る</b-button>
     </div>
     <!-- 条件を絞るボタン押下で表示 -->
     <b-collapse id="filtering" class="mt-2">
@@ -77,14 +77,13 @@ export default {
         { value: "バー・カクテル", text: "バー・カクテル" },
         { value: "その他グルメ", text: "その他グルメ" },
       ],
-      isLiked: false,
     };
   },
+  props: ["p_shop_list"],
   methods: {
     reset_filter: function () {
       this.$store.commit("setShopFilterBudget", null);
       this.$store.commit("setShopFilterGenre", null);
-      this.isLiked = false;
       document.filterForm.reset();
     },
     push_top: function () {
@@ -112,8 +111,17 @@ export default {
         this.$store.commit("setShopFilterGenre", value);
       },
     },
+    isLiked: {
+      get() {
+        return this.$store.state.shop_filter.isLiked;
+      },
+      set(value) {
+        this.$store.commit("setShopFilterLike", value);
+      },
+    },
     shop_list: function () {
-      let l_shopList = this.$store.state.shop_list;
+      let l_shopList = this.p_shop_list;
+      // let l_shopList = this.$store.state.shop_list;
 
       if (this.isLiked) {
         l_shopList = this.$store.state.shop_list.filter(
@@ -133,6 +141,7 @@ export default {
         );
       }
       this.$store.commit("setFilteredShopList", l_shopList);
+
       return l_shopList;
     },
   },
@@ -141,10 +150,10 @@ export default {
 
 <style scoped>
 .buttons {
-  max-width: 50rem;
+  max-width: 30rem;
   margin: 1rem auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .card {

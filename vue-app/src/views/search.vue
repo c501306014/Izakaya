@@ -15,6 +15,13 @@
             variant="primary"
             ><b-icon icon="search" /> 検索</b-button
           >
+          <b-button
+            v-if="!is_loading"
+            @click="push_liked"
+            class="liked-btn"
+            variant="success"
+            >お気に入り一覧を見る</b-button
+          >
           <myLoading :is_loading="is_loading" :text="'検索中...'" />
         </b-form>
         <div v-if="err_message">
@@ -92,6 +99,9 @@ export default {
     };
   },
   methods: {
+    push_liked: function () {
+      this.$router.push({ name: "Liked", params: { from_result: false } });
+    },
     onSubmit: async function (event) {
       event.preventDefault();
       this.$store.commit("setForm", this.l_form);
@@ -168,5 +178,10 @@ h3 {
 
 .err-msg {
   white-space: pre-line;
+}
+
+.liked-btn {
+  max-width: 30rem;
+  width: 100%;
 }
 </style>
